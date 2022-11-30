@@ -2,11 +2,11 @@ import { useEffect, useCallback, useState  } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 
-import { Container, Pokemon, Pagination, Loading, MainTitle, Button  } from './styles';
+import { Container, Pokemon, Pagination, Loading, MainTitle, Button, Search  } from './styles';
 import PokemonLogo from '../../assets/pokemon.png';
 import LoadingIcon from '../../assets/loading.png';
 
-const baseUrl = 'https://pokeapi.co/api/v2/pokemon?limit=20';
+const baseUrl = 'https://pokeapi.co/api/v2/pokemon?limit=10';
 
 interface ApiResponse {
   count: number;
@@ -23,6 +23,8 @@ interface IPokemon {
 export default function Home(): JSX.Element {
   const [loading, setLoading] = useState(true);
   const [response, setResponse] = useState<ApiResponse | null>(null);
+  const [searchInput, setSearchInput] = useState('');
+  const [filteredResults, setFilteredResults] = useState([]);
 
 
   useEffect(() => {
@@ -41,6 +43,7 @@ export default function Home(): JSX.Element {
       setLoading(true);
 
       const { data } = await axios.get<ApiResponse>(response[type] as string);
+      console.log(data,'data')
 
       setResponse(data);
 
@@ -49,24 +52,53 @@ export default function Home(): JSX.Element {
     [response, setResponse, setLoading]
   );
 
+  const searchItems = (searchValue:any) => {
+    let res:any = response
+    console.log(res,'rss')
+    setSearchInput(searchValue)
+    if (searchInput !== '') {
+    let filteredData:any = response && response.results.filter((item) => {
+      return Object.values(item).join('').toLowerCase().includes(searchInput.toLowerCase())
+  })
+  // console.log(filteredData,'filteredData')
+  setFilteredResults(filteredData)
+}
+else{
+  // setFilteredResults(res)
+}
+  }
+
   return (
     <Container>
       <MainTitle>
         <img src={PokemonLogo} alt="Pokemon_logo" />
+      </MainTitle>
+      <MainTitle>
+        <Search type="text" onChange={(e) => searchItems(e.target.value)} placeholder="Search your pokemon..."/>
       </MainTitle>
       {!response || loading ? (
         <Loading>
           <img src={LoadingIcon} alt="Loading_Icon" />
         </Loading>
       ) : (
+
         <>
-          {response.results.map((pokemon) => (
-           <Pokemon key={pokemon.url}>
-              <Link to={'/' + pokemon.name}>
-                <h2>{pokemon.name}</h2>
-              </Link>
-            </Pokemon>
-          ))}
+          {searchInput.length > 1 ? (
+            filteredResults.map((pokemon:IPokemon) => (
+              <Pokemon key={pokemon.url}>
+                 <Link to={'/' + pokemon.name}>
+                   <h2>{pokemon.name}</h2>
+                 </Link>
+               </Pokemon>
+             ))
+          ): ( response.results.map((pokemon) => (
+            <Pokemon key={pokemon.url}>
+               <Link to={'/' + pokemon.name}>
+                 <h2>{pokemon.name}</h2>
+               </Link>
+             </Pokemon>
+           )))}
+          {/* {} */}
 
           <Pagination isFirstPage={!response.previous}>
             <Button onClick={() => changePage('previous')}>Prev  </Button>

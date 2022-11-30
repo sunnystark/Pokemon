@@ -25,10 +25,21 @@ export const Container = styled.div`
   }
 `;
 
+export const Search = styled.input`
+  font-size: 18px;
+  padding: 10px;
+  margin: 10px;
+  background: #fff;
+  border: 1px solid red;
+  ::placeholder {
+    color: palevioletred;
+  }
+`;
+
 export const MainTitle = styled.main`
-padding-bottom: 100px;
+padding-bottom: 10px;
 text-align: center;  
-padding-top: 100px;
+padding-top: 10px;
   
 
   @media (max-width: 900px) {
