@@ -25,6 +25,7 @@ export const Container = styled.div`
   }
 `;
 
+
 export const Search = styled.input`
   font-size: 18px;
   padding: 10px;
@@ -52,10 +53,12 @@ padding-top: 10px;
 
 
 export const Pokemon = styled.div`
-  margin: 0 auto;
-  max-width: 300px;
+  margin-left: 30px;
+  min-width: 150px;
+  padding: 10px;
   border-radius: 10px;
   text-align: center;
+  display: inline-grid;
   box-shadow: 5px 10px 18px #888888;
   background-color: #ffffff;
   

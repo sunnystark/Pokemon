@@ -6,7 +6,7 @@ import { Container, Pokemon, Pagination, Loading, MainTitle, Button, Search  } f
 import PokemonLogo from '../../assets/pokemon.png';
 import LoadingIcon from '../../assets/loading.png';
 
-const baseUrl = 'https://pokeapi.co/api/v2/pokemon?limit=10';
+const baseUrl = 'https://pokeapi.co/api/v2/pokemon?limit=20';
 
 interface ApiResponse {
   count: number;
